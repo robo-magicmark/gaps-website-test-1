@@ -19,7 +19,7 @@
         "additionalProperties": false
       }
     },
-    "sponsor": { "type": "string" },
+    "sponsor": { "type": "string", "pattern": "^@" },
     "discussion": { "type": "string" },
     "id": { "type": "integer" },
     "related": { "type": "array", "items": { "type": "integer" } },
