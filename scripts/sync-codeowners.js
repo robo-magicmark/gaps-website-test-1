@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
@@ -9,33 +9,34 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, "..");
 const gapsDir = join(rootDir, "gaps");
 
-function getGapDirs() {
-  return readdirSync(gapsDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^GAP-[1-9]\d*$/.test(d.name));
+async function getGapDirs() {
+  const entries = await readdir(gapsDir, { withFileTypes: true });
+  return entries.filter((d) => d.isDirectory() && /^GAP-[1-9]\d*$/.test(d.name));
 }
 
-function main() {
-  const lines = [];
+async function main() {
+  const dirs = await getGapDirs();
 
-  for (const dir of getGapDirs()) {
-    const metadataPath = join(gapsDir, dir.name, "metadata.yml");
-    const metadata = parseYaml(readFileSync(metadataPath, "utf8"));
-
-    const owners = metadata.authors.map((a) => a.githubUsername.replace(/^@/, ""));
-    const ownerList = owners.map((o) => `@${o}`).join(" ");
-    lines.push(`/gaps/${dir.name}/ ${ownerList}`);
-  }
+  const lines = await Promise.all(
+    dirs.map(async (dir) => {
+      const metadataPath = join(gapsDir, dir.name, "metadata.yml");
+      const metadata = parseYaml(await readFile(metadataPath, "utf8"));
+      const owners = metadata.authors.map((a) => a.githubUsername.replace(/^@/, ""));
+      const ownerList = owners.map((o) => `@${o}`).join(" ");
+      return `/gaps/${dir.name}/ ${ownerList}`;
+    }),
+  );
 
   const content = lines.length > 0 ? lines.join("\n") + "\n" : "";
   const codeownersPath = join(rootDir, "CODEOWNERS");
 
-  const existing = readFileSync(codeownersPath, "utf8");
+  const existing = await readFile(codeownersPath, "utf8");
   if (existing === content) {
     console.log("CODEOWNERS is up to date.");
     process.exit(0);
   }
 
-  writeFileSync(codeownersPath, content);
+  await writeFile(codeownersPath, content);
   console.log("CODEOWNERS updated.");
 }
 
