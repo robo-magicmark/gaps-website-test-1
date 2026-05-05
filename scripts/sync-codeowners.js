@@ -16,6 +16,7 @@ async function getGapDirs() {
 
 async function main() {
   const dirs = await getGapDirs();
+  dirs.sort();
 
   const lines = await Promise.all(
     dirs.map(async (dir) => {
