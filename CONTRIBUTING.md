@@ -22,6 +22,23 @@ example, if the PR that adds a GAP is `graphql/gaps#10`, the proposal becomes
 **GAP-10**. Until the PR is filed and the number known, use `GAP-0` as a
 placeholder.
 
+## Use of the term "GraphQL"
+
+GAPs must comply with the [GraphQL trademark
+policy](https://graphql.org/brand/#the-graphql-trademark); so, for example,
+rather than calling your GAP "GraphQL Cursor Connections Specification" choose
+"Cursor Connections Specification for GraphQL".
+
+Key rules:
+
+- Keep the “GraphQL” word consistent, with the first letter and QL capitalized.
+  Don’t lowercase or abbreviate “GraphQL” (for example “Graphql” or “GQL”).
+- Don’t directly combine “GraphQL” with another trademark or generic term.
+  Discouraged: "X GraphQL", "GraphQL X"; encouraged: "X for GraphQL".
+- Don’t use “GraphQL” in a way that could imply partnership, sponsorship, or
+  endorsement by the GraphQL project or GraphQL Foundation either directly or by
+  omission.
+
 ## Filing a GAP
 
 Before filing a GAP you're encouraged to create an issue outlining the topic to
