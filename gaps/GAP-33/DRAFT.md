@@ -348,6 +348,7 @@ SetDirectiveExtension : extend directive @ Name SetArgumentsDefinitionOrExtensio
 # Set Operations
 
 With the provided syntax, we can create set operations
+
 - `union`, or ∪⁠ (also known as **merge** or **set addition**). `union` is associative and commutative, much like addition.
 - `intersect`, or ∩.
 - `exclude`, or \, or - (also known as **difference** or **set subtraction**). `exclude` is neither associative nor commutative, much like subtraction.
